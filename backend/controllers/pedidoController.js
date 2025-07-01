@@ -1,33 +1,40 @@
 const prisma = require('../database');
 
-const obtenerProductos = async (req, res) => {
-    const productos = await prisma.productos.findMany({
-        include: {
-            categorias: true,
-        },
-        orderBy: {
-            id: 'asc'
-        }
+const crearPedido = async (req, res) => {
+    const usuarioId = req.usuario.id; 
+    const { productos, total } = req.body;
+
+    const resultado = await prisma.$transaction(async (tx) => {
+        const pedido = await tx.pedidos.create({
+            data: {
+                usuario_id: usuarioId,
+                total: total,
+                estado: 'colocado',
+            }
+        });
+
+        const datosDetallesPedido = productos.map(producto => {
+            return {
+                pedido_id: pedido.id,
+                producto_id: producto.id,
+                cantidad: producto.cantidad,
+                precio_unitario: producto.precio
+            };
+        });
+
+        await tx.detallespedido.createMany({
+            data: datosDetallesPedido
+        });
+
+        return pedido;
     });
 
-    const productosAgrupados = productos.reduce((acc, producto) => {
-
-        const categoriaNombre = producto.categorias.nombre;
-        if (!acc[categoriaNombre]) {
-            acc[categoriaNombre] = {
-                nombre: categoriaNombre,
-                items: [],
-            };
-        }
-        acc[categoriaNombre].items.push(producto);
-        return acc;
-    }, {});
-
-    const resultadoFinal = Object.values(productosAgrupados);
-
-    res.json(resultadoFinal);
+    res.status(201).json({
+        mensaje: "Pedido creado :)",
+        pedido: resultado
+    });
 };
 
 module.exports = {
-    obtenerProductos,
+    crearPedido,
 };
