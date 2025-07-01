@@ -18,13 +18,13 @@ El frontend está construido con **Vanilla JavaScript** y **Web Components**, mi
 │   ├── prisma/
 │   ├── routes/
 │   ├── .env
-│   ├── db.js
+│   ├── database.js
 │   ├── server.js
 │   ├── package.json
 │   └── package-lock.json
 
 ├── frontend/
-│   ├── assets/
+│   ├── public/assets/
 │   │   ├── icons/
 │   │   └── images/
 │   ├── blocks/
@@ -41,10 +41,7 @@ El frontend está construido con **Vanilla JavaScript** y **Web Components**, mi
 ├── schema_design/
 │   └── supabase-schema.png
 
-├── .gitignore
-├── .gitattributes
 ├── README.md
-├── package-lock.json
 ```
 
 ---
