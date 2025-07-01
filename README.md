@@ -1,2 +1,0 @@
-# aplicaciones
-kaxdawhogvs{pv j
