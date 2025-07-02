@@ -1,7 +1,7 @@
 const prisma = require('../db');
 
-class ActualizacioonPublicacionCommand {
-    constructor(idPublicacion,  idUsuario, datosActualizados) {
+class ActualizarPublicacionCommand {
+    constructor(idPublicacion, idUsuario, datosActualizados) {
         this.idPublicacion = idPublicacion;
         this.idUsuario = idUsuario;
         this.datosActualizados = datosActualizados;

@@ -75,7 +75,7 @@ class ReservationPage extends HTMLElement {
             headers['Authorization'] = `Bearer ${token}`;
         }
         
-        const respuesta = await fetch('/api/reservas', {
+        const respuesta = await fetch('http://localhost:3000/api/reservas', {
             method: 'POST',
             headers: headers,
             body: JSON.stringify(datos)

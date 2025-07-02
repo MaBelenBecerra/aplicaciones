@@ -53,7 +53,7 @@ class RegistrationPage extends HTMLElement {
             return;
         }
 
-        const respuesta = await fetch('/api/usuarios/registro', {
+        const respuesta = await fetch('http://localhost:3000/api/usuarios/registro', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

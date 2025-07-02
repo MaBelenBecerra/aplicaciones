@@ -1,3 +1,4 @@
+//Este archivo es un script de prisma para extraer datos de un json e insertarlos en una DB
 const { PrismaClient } = require('@prisma/client');
 const fs = require('fs');
 const path = require('path');

@@ -48,7 +48,7 @@ class LoginPage extends HTMLElement {
         const formData = new FormData(this.formularioLogin);
         const datos = Object.fromEntries(formData.entries());
 
-        const respuesta = await fetch('/api/usuarios/login', {
+        const respuesta = await fetch('http://localhost:3000/api/usuarios/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(datos)

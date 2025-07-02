@@ -17,7 +17,7 @@ class ServicioAuth {
     }
 
     async iniciarSesion(email, password) {
-        const respuesta = await fetch('/api/usuarios/login', {
+        const respuesta = await fetch('http://localhost:3000/api/usuarios/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -70,5 +70,5 @@ class ServicioAuth {
         }
     }
 }
-
+//Singleton
 export const servicioAuth = new ServicioAuth();

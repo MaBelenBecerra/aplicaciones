@@ -1,20 +1,22 @@
 const jwt = require('jsonwebtoken');
 
-const proteccionRutas = (req, res, next) => {
-    const token = req.headers.authorization?.split(' ')[1];
+const protegerRuta = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
 
-    if (!token) {
-        return res.status(401).json({ error: 'Token no proporcionado' });
+    if (token == null) {
+        return res.sendStatus(401);
     }
-
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+//Metodo para verificar el token
+    jwt.verify(token, process.env.JWT_SECRET, (err, usuario) => {
         if (err) {
-            return res.status(403).json({ error: 'Token inválido' });
+            return res.sendStatus(403); 
         }
-
-        req.usuario = decoded;
-        next();
+        req.usuario = usuario; 
+        next(); 
     });
-}
+};
 
-module.exports = {proteccionRutas};
+module.exports = {
+    protegerRuta,
+};

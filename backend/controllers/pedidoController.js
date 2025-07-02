@@ -1,4 +1,4 @@
-const prisma = require('../database');
+const prisma = require('../db');
 
 const crearPedido = async (req, res) => {
     const usuarioId = req.usuario.id; 

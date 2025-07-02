@@ -1,36 +1,46 @@
-const blogService = require('../services/blogService');
-const CommandFactory = require('../factories/CommandFactory');
-const prisma = require('../database');
+const prisma = require('../db');
 const CrearPublicacionCommand = require('../commands/CrearPublicacionCommand');
 const ActualizarPublicacionCommand = require('../commands/ActualizarPublicacionCommand');
 const EliminarPublicacionCommand = require('../commands/EliminarPublicacionCommand');
 
 const obtenerTodosLosPosts = async (req, res) => {
-    try {
-        const posts = await blogService.obtenerTodosLosPosts();
-        res.json(posts);
-    } catch (error) {
-        res.status(500).json({ mensaje: 'Error' });
-    }
+    const posts = await prisma.publicacionesblog.findMany({
+        orderBy: { fecha_creacion: 'desc' },
+        include: {
+            usuarios: { select: { nombre: true } }
+        }
+    });
+    res.json(posts);
 };
 
 const obtenerPostPorId = async (req, res) => {
-    try {
-        const post = await blogService.obtenerPostPorId(req.params.id);
-        if (post) res.json(post);
-        else res.status(404).json({ mensaje: 'No se encontro' });
-    } catch (error) {
-        res.status(500).json({ mensaje: 'Error' });
+    const { id } = req.params;
+    const post = await prisma.publicacionesblog.findUnique({
+        where: { id: parseInt(id) },
+        include: {
+            usuarios: { select: { nombre: true } }
+        }
+    });
+
+    if (post) {
+        res.json(post);
+    } else {
+        res.status(404).json({ mensaje: 'No se encontro' });
     }
 };
 
 const crearPost = async (req, res) => {
-    try {
-        const nuevaPublicacion = await blogService.crearPost(req.body, req.usuario.id);
-        res.status(201).json({ mensaje: "Publicacion creada :)", publicacion: nuevaPublicacion });
-    } catch (error) {
-        res.status(500).json({ mensaje: 'Error' });
-    }
+    const { titulo, contenido, imagenUrl } = req.body;
+    const autorId = req.usuario.id;
+
+    const datosComando = { titulo, contenido, imagenUrl, autorId };
+    const comando = new CrearPublicacionCommand(datosComando);
+    const nuevaPublicacion = await comando.ejecutar();
+
+    res.status(201).json({
+        mensaje: "Publicacion creada :)",
+        publicacion: nuevaPublicacion
+    });
 };
 
 const manejarLike = async (req, res) => {

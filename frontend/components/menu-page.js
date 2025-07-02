@@ -168,7 +168,7 @@ class MenuPage extends HTMLElement {
     }
 
     async cargarDatosDelMenu() {
-        const respuesta = await fetch('/api/productos');
+        const respuesta = await fetch('http://localhost:3000/api/productos');
         const datosMenu = await respuesta.json();
         this.todasLasCategorias = datosMenu;
         this.menuCompleto = this.todasLasCategorias.flatMap(cat => cat.items);

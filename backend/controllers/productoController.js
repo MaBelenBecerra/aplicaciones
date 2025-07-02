@@ -1,4 +1,4 @@
-const prisma = require('../database');
+const prisma = require('../db');
 
 const obtenerProductos = async (req, res) => {
     const productos = await prisma.productos.findMany({
